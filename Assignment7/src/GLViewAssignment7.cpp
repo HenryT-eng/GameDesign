@@ -117,6 +117,8 @@ void GLViewAssignment7::updateWorld()
    //boxact = p->createRigidDynamic(t);
 
    cubepx->setPosition(Vector(boxact->getGlobalPose().p.x, boxact->getGlobalPose().p.y, boxact->getGlobalPose().p.z));
+   cubepx3->setPosition(Vector(boxact3->getGlobalPose().p.x, boxact3->getGlobalPose().p.y, boxact3->getGlobalPose().p.z));
+
    cube1->setPosition(Vector(cube1act->getGlobalPose().p.x, cube1act->getGlobalPose().p.y, cube1act->getGlobalPose().p.z));
    cube2->setPosition(Vector(cube2act->getGlobalPose().p.x, cube2act->getGlobalPose().p.y, cube2act->getGlobalPose().p.z));
    cube3->setPosition(Vector(cube3act->getGlobalPose().p.x, cube3act->getGlobalPose().p.y, cube3act->getGlobalPose().p.z));
@@ -207,7 +209,7 @@ void GLViewAssignment7::onKeyDown( const SDL_KeyboardEvent& key )
        cam->moveRight();
        dflag = true;
    }
-   else if (key.keysym.sym == SDLK_z)
+   else if (key.keysym.sym == SDLK_x)
    {
        //spawn cube at camera position forced in look direction
        //std::string shinyRedPlasticCube(ManagerEnvironmentConfiguration::getSMM() + "/models/cube4x4x4redShinyPlastic_pp.wrl");
@@ -227,7 +229,40 @@ void GLViewAssignment7::onKeyDown( const SDL_KeyboardEvent& key )
 
        //cube1act->addForce(physx::PxVec3(cam->getLookDirection().x * 10, cam->getLookDirection().y * 10, cam->getLookDirection().z) * 10);
       
-       boxact->addForce(physx::PxVec3(0,-100,150));
+       boxact->addForce(physx::PxVec3(0,-50,0));
+   }
+   else if (key.keysym.sym == SDLK_z)
+   {
+       boxact->addForce(physx::PxVec3(50, 0, 0));
+   }
+   else if (key.keysym.sym == SDLK_c)
+   {
+       boxact->addForce(physx::PxVec3(-50, 0, 0));
+   }
+   else if (key.keysym.sym == SDLK_v)
+   {
+       boxact->addForce(physx::PxVec3(0, 0, 50));
+   }
+
+   else if (key.keysym.sym == SDLK_o)
+   {
+       boxact3->addForce(physx::PxVec3(0, -100, 0));
+   }
+   else if (key.keysym.sym == SDLK_p)
+   {
+       boxact3->addForce(physx::PxVec3(-100, 0, 0));
+   }
+   else if (key.keysym.sym == SDLK_i)
+   {
+       boxact3->addForce(physx::PxVec3(100, 0, 0));
+   }
+   else if (key.keysym.sym == SDLK_l)
+   {
+       boxact3->addForce(physx::PxVec3(0, 100, 0));
+   }
+   else if (key.keysym.sym == SDLK_k)
+   {
+       boxact3->addForce(physx::PxVec3(0, 0, 50));
    }
 }
 
@@ -370,23 +405,39 @@ void Aftr::GLViewAssignment7::loadMap()
         gMaterial = p->createMaterial(0.5f, 0.5f, 0.6f);
 
         boxpx = p->createShape(physx::PxBoxGeometry(2, 2, 2), *gMaterial);//good for the shiny red plastic cube
-        physx::PxTransform t({ 17.5,8,4 });
+        physx::PxTransform t({ 17.5,18,4 });
         boxact = p->createRigidDynamic(t);
         boxact->attachShape(*boxpx);
         scene->addActor(*boxact);
     }
+    {
+        cubepx3 = WO::New(shinyRedPlasticCube, Vector(1, 1, 1), MESH_SHADING_TYPE::mstFLAT);
+        //cubepx->setPosition(Vector(0, 0, 40));
+        cubepx3->renderOrderType = RENDER_ORDER_TYPE::roOPAQUE;
+        cubepx3->setLabel("cubepx3");
+        worldLst->push_back(cubepx3);
+
+        gMaterial = p->createMaterial(0.5f, 0.5f, 0.6f);
+
+        boxpx3 = p->createShape(physx::PxBoxGeometry(2, 2, 2), *gMaterial);//good for the shiny red plastic cube
+        physx::PxTransform t({ -20,8,4 });
+        boxact3 = p->createRigidDynamic(t);
+        boxact3->attachShape(*boxpx3);
+        scene->addActor(*boxact3);
+    }
+    //-----------------------------------------
 
     {
-        cubepx2 = WO::New(shinyRedPlasticCube, Vector(1, 1, 1), MESH_SHADING_TYPE::mstFLAT);
-        cubepx2->setPosition(Vector(1, 1, 10));
+        cubepx2 = WO::New(shinyRedPlasticCube, Vector(1, 1, 5), MESH_SHADING_TYPE::mstFLAT);
+        cubepx2->setPosition(Vector(-20, -20, 5));
         cubepx2->renderOrderType = RENDER_ORDER_TYPE::roOPAQUE;
         cubepx2->setLabel("cubepx2");
         worldLst->push_back(cubepx2);
 
         gMaterial = p->createMaterial(0.5f, 0.5f, 0.6f);
 
-        boxpx2 = p->createShape(physx::PxBoxGeometry(2, 2, 2), *gMaterial);//good for the shiny red plastic cube
-        physx::PxTransform t({ 1,1,10 });
+        boxpx2 = p->createShape(physx::PxBoxGeometry(2, 2, 10), *gMaterial);//good for the shiny red plastic cube
+        physx::PxTransform t({ -20,-20,5 });
         boxact2 = p->createRigidStatic(t);
         boxact2->attachShape(*boxpx2);
         scene->addActor(*boxact2);

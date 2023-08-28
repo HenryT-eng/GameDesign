@@ -101,6 +101,10 @@ public:
    WO* cubepx2;
    physx::PxShape* boxpx2 = nullptr;
    physx::PxRigidStatic* boxact2;
+
+   WO* cubepx3;
+   physx::PxShape* boxpx3 = nullptr;
+   physx::PxRigidDynamic* boxact3;
    
    WO* pew;
    physx::PxShape* pewpx = nullptr;
